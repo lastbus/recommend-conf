@@ -1,0 +1,356 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.bailiangroup.osp</groupId>
+		<artifactId>blgroup-osp-reconf</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>blgroup-osp-reconf-web</artifactId>
+	<packaging>war</packaging>
+		
+	<dependencies>
+
+		<dependency>
+			<groupId>com.bailiangroup.osp</groupId>
+			<artifactId>blgroup-osp-common-domain</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.bailiangroup.osp</groupId>
+			<artifactId>blgroup-osp-common-service</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.bailiangroup.osp</groupId>
+			<artifactId>blgroup-osp-common-web</artifactId>
+			<version>${blgroup.osp.common.version}</version>
+			<scope>runtime</scope>
+			<type>war</type>
+		</dependency>
+
+		<dependency>
+			<groupId>com.bailiangroup.osp</groupId>
+			<artifactId>blgroup-osp-reconf-domain</artifactId>
+			<version>${blgroup.osp.reconf.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.bailiangroup.osp</groupId>
+			<artifactId>blgroup-osp-reconf-service</artifactId>
+			<version>${blgroup.osp.reconf.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>opensymphony</groupId>
+			<artifactId>sitemesh</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!--spring test-->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>4.2.2.RELEASE</version>
+		</dependency>
+
+		<!-- mybatis start -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+		</dependency>
+		<!--mybatis end -->
+		
+		<!-- ERMaster begin -->
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>swt</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>draw2d</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>jface</artifactId>
+		</dependency>
+		
+		<dependency>
+		   <groupId>bitwalker</groupId>
+		   <artifactId>UserAgentUtils</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.zeroturnaround</groupId>
+			<artifactId>zt-zip</artifactId>
+			<type>jar</type>
+		</dependency>
+
+		<dependency>
+			<groupId>org.insightech.er</groupId>
+			<artifactId>ERMaster</artifactId>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/org.insightech.er_1.0.0.v20121127-2328.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- ERMaster end -->
+
+	</dependencies>
+
+	<build>
+		<finalName>blgroup-osp-reconf</finalName>
+		<outputDirectory>${project.basedir}/src/main/webapp/WEB-INF/classes/</outputDirectory>
+		<resources>
+			<resource>
+				<directory>${basedir}/src/main/java</directory>
+				<includes>
+					<include>**/*.*</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>${basedir}/src/main/resources</directory>
+<!-- 				<includes>
+					<include>**/*.*</include>
+				</includes> -->
+				<filtering>true</filtering>
+				<includes>
+					<include>i18n/*.properties</include>
+					<include>**/*.xml</include>
+					<include>props/${profiles.activation}/*.properties</include>
+					<include>props/*.properties</include>
+				</includes>
+			</resource>
+		</resources>
+		<plugins>
+			<!-- Compiler 插件, 设定JDK版本 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<encoding>UTF-8</encoding>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+					<showWarnings>true</showWarnings>
+				</configuration>
+			</plugin>
+
+			<!-- war 打包插件, 设定war包名称不带版本号 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<useCache>false</useCache>
+					<archive>
+						<addMavenDescriptor>true</addMavenDescriptor>
+					</archive>
+					<archiveClasses>false</archiveClasses>
+					<failOnMissingWebXml>true</failOnMissingWebXml>
+					<packagingExcludes>WEB-INF/classes/props_prod/**</packagingExcludes>
+					<webXml>${project.build.outputDirectory}/props_prod/web.xml</webXml>
+					<overlays>
+						<overlay>
+							<groupId>com.bailiangroup.osp</groupId>
+							<artifactId>blgroup-osp-common-web</artifactId>
+							<excludes>
+								<!--<exclude>WEB-INF/tlds/fns.tld</exclude>-->
+								<exclude>WEB-INF/tlds/*</exclude>
+								<exclude>WEB-INF/lib/*</exclude>
+								<exclude>WEB-INF/web.xml</exclude>
+							</excludes>
+						</overlay>
+					</overlays>
+				</configuration>
+			</plugin>
+
+			<!-- Eclipse 插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<downloadSources>${downloadSources}</downloadSources>
+					<downloadJavadocs>false</downloadJavadocs>
+					<wtpversion>2.8</wtpversion>
+					<sourceIncludes>
+						<sourceInclude>**/*.xml</sourceInclude>
+						<sourceInclude>**/*.jsp</sourceInclude>
+					</sourceIncludes>
+					<additionalConfig>
+						<file>
+							<name>.settings/org.eclipse.core.resources.prefs</name>
+							<content>
+					    	    <![CDATA[eclipse.preferences.version=1${line.separator}encoding/<project>=${project.build.sourceEncoding}${line.separator}]]>
+							</content>
+						</file>
+					</additionalConfig>
+					<additionalProjectnatures>
+						<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+					</additionalProjectnatures>
+				</configuration>
+			</plugin>
+
+			<!-- tomcat7插件 -->
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<configuration>
+					<port>${webserver.port}</port>
+					<path>/${project.artifactId}</path>
+					<uriEncoding>${project.build.sourceEncoding}</uriEncoding>
+				</configuration>
+			</plugin>
+
+			<!-- resource插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-resources-web</id>
+						<!-- 在default生命周期的 validate阶段就执行resources插件的copy-resources目标 -->
+						<phase>validate</phase>
+						<goals>
+		                	<goal>copy-resources</goal>
+		                </goals>
+		                <configuration>
+		                	<!-- 指定resources插件处理资源文件到哪个目录下 -->
+                			<outputDirectory>${project.basedir}/src/main/webapp/WEB-INF</outputDirectory>
+                			<!--  也可以用下面这样的方式（指定相对url的方式指定outputDirectory）
+                			<outputDirectory>target/classes</outputDirectory>
+                			 -->
+			                <!-- 待处理的资源定义 -->
+			                <resources>
+			                  <resource>
+			                    <!-- 指定resources插件处理哪个目录下的资源文件 -->
+			                    <directory>src/main/resources/props_prod</directory>
+			                    <includes>  
+					               <include>web.xml</include>  
+					            </includes>
+			                    <filtering>false</filtering>
+			                  </resource>
+			                </resources>
+		              </configuration>
+					</execution>
+					<execution>
+						<id>copy-resources-props</id>
+						<!-- 在default生命周期的 validate阶段就执行resources插件的copy-resources目标 -->
+						<phase>validate</phase>
+						<goals>
+		                	<goal>copy-resources</goal>
+		                </goals>
+		                <configuration>
+		                	<!-- 指定resources插件处理资源文件到哪个目录下 -->
+                			<outputDirectory>${project.build.outputDirectory}/props/${profiles.activation}</outputDirectory>
+                			<!--  也可以用下面这样的方式（指定相对url的方式指定outputDirectory）
+                			<outputDirectory>target/classes</outputDirectory>
+                			 -->
+			                <!-- 待处理的资源定义 -->
+			                <resources>
+			                  <resource>
+			                    <!-- 指定resources插件处理哪个目录下的资源文件 -->
+			                    <directory>src/main/resources/props_prod/${profiles.activation}</directory>
+			                    <!-- 指定不需要处理的资源 
+			                    <excludes>
+			                      <exclude>WEB-INF/*.*</exclude>
+			                    </excludes>
+			                    -->
+			                    <!-- 是否对待处理的资源开启过滤模式 (resources插件的copy-resources目标也有资源过滤的功能，这里配置的
+			                   	 这个功能的效果跟<build><resources><resource>下配置的资源过滤是一样的，只不过可能执行的阶段不一样，
+			                                                   这里执行的阶段是插件指定的validate阶段，
+			                    <build><resources><resource>下的配置将是在resources插件的resources目标执行时起作用（在process-resources阶段）)-->
+			                    <filtering>false</filtering>
+			                  </resource>
+			                </resources>
+		              </configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- install插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+			</plugin>
+
+			<!-- clean插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+			</plugin>
+
+			<!-- ant插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+			</plugin>
+
+			<!-- dependency插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skip>${maven.test.skip}</skip>
+					<testFailureIgnore>${maven.test.failure.ignore}</testFailureIgnore>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<!-- Should be matched with Spring Env/Web Env Configuration mvn -package -P dev [func] [prod] files -->
+	<profiles>
+		<!-- Development Environment -->
+		<profile>
+			<id>dev</id>
+			<properties>
+				<profiles.activation>development</profiles.activation>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation> 
+		</profile>
+		<!-- Integration (Functional) Testing Environment -->
+		<profile>
+			<id>func</id>
+			<properties>
+				<profiles.activation>functional</profiles.activation>
+			</properties>
+		</profile>
+		<!-- Production Testing Environment -->
+		<profile>
+			<id>prod</id>
+			<properties>
+				<profiles.activation>production</profiles.activation>
+			</properties>
+		</profile>
+		<profile>
+			<id>pre</id>
+			<properties>
+				<profiles.activation>pression</profiles.activation>
+			</properties>
+		</profile>
+	</profiles>
+</project>

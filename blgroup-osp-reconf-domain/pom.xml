@@ -1,0 +1,57 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.bailiangroup.osp</groupId>
+		<artifactId>blgroup-osp-reconf</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>blgroup-osp-reconf-domain</artifactId>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.bailiangroup.osp</groupId>
+			<artifactId>blgroup-osp-base-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.bailiangroup.osp</groupId>
+			<artifactId>blgroup-osp-common-domain</artifactId>
+		</dependency>
+	</dependencies>
+
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.mysema.maven</groupId>
+				<artifactId>apt-maven-plugin</artifactId>
+				<version>1.1.1</version>
+				<dependencies>
+					<dependency>
+						<groupId>com.mysema.querydsl</groupId>
+						<artifactId>querydsl-apt</artifactId>
+						<version>${querydsl.version}</version>
+					</dependency>
+				</dependencies>
+				<!-- <executions> <execution> <phase>generate-sources</phase> <goals> 
+					<goal>process</goal> </goals> <configuration> <outputDirectory>target/generated-sources/java</outputDirectory> 
+					<processors> <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor> 
+					</processors> </configuration> </execution> </executions> -->
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<encoding>UTF-8</encoding>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+					<showWarnings>true</showWarnings>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

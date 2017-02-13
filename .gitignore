@@ -1,0 +1,8 @@
+.idea 
+blgroup-osp-reconf-domain/target 
+blgroup-osp-reconf-domain/*.iml
+blgroup-osp-reconf-service/target
+blgroup-osp-reconf-service/*.iml
+blgroup-osp-reconf-web/target 
+blgroup-osp-reconf-web/*.iml
+src
